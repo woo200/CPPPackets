@@ -69,6 +69,10 @@ namespace woo200
     {
         return std::string((char*)&this->value, sizeof(this->value));
     }
+    int IntegerPacket::get_value()
+    {
+        return this->value;
+    }
 
     StringPacket::StringPacket(std::string data)
     {
@@ -88,6 +92,10 @@ namespace woo200
     {
         unsigned short size = this->data.size();
         return std::string((char*)&size, sizeof(size)) + this->data;
+    }
+    std::string StringPacket::get_value()
+    {
+        return this->data;
     }
     
 }

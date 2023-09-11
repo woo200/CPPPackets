@@ -34,6 +34,7 @@ namespace woo200
             int value;
         public:
             IntegerPacket(int value = 0);
+            int get_value();
     };
 
     class StringPacket : public Packet
@@ -44,5 +45,6 @@ namespace woo200
             std::string data;
         public:
             StringPacket(std::string data = "");
+            std::string get_value();
     };
 }
