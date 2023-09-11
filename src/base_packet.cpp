@@ -49,6 +49,10 @@ namespace woo200
         for (unsigned long i = 0; i < this->packets.size(); i++)
             this->packets[i]->read_i_data(socket);
     }
+    int Packet::send_to_socket(ClientSocket &socket)
+    {
+        return socket.send((void*)this->get_data().c_str(), this->get_size());
+    }
 
     int Packet::get_size()
     {
@@ -57,28 +61,28 @@ namespace woo200
         return this->size;
     }
 
-    IntegerPacket::IntegerPacket(int value)
+    PInt::PInt(int value)
     {
         this->value = value;
     }
-    void IntegerPacket::read_i_data(ClientSocket &socket)
+    void PInt::read_i_data(ClientSocket &socket)
     {
         socket.recv((char*)&this->value, sizeof(this->value));
     }
-    std::string IntegerPacket::get_i_data() 
+    std::string PInt::get_i_data() 
     {
         return std::string((char*)&this->value, sizeof(this->value));
     }
-    int IntegerPacket::get_value()
+    int PInt::get_value()
     {
         return this->value;
     }
 
-    StringPacket::StringPacket(std::string data)
+    PString::PString(std::string data)
     {
         this->data = data;
     }
-    void StringPacket::read_i_data(ClientSocket &socket)
+    void PString::read_i_data(ClientSocket &socket)
     {
         unsigned short size;
         socket.recv((unsigned short*)&size, sizeof(size));
@@ -88,12 +92,12 @@ namespace woo200
 
         this->data = std::string(data, size);
     }
-    std::string StringPacket::get_i_data()
+    std::string PString::get_i_data()
     {
         unsigned short size = this->data.size();
         return std::string((char*)&size, sizeof(size)) + this->data;
     }
-    std::string StringPacket::get_value()
+    std::string PString::get_value()
     {
         return this->data;
     }

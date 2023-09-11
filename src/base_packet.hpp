@@ -21,30 +21,31 @@ namespace woo200
             void read_from_socket(ClientSocket &socket);
             std::string get_data();
             int get_size();
+            int send_to_socket(ClientSocket &socket);
 
             Packet* next();
             Packet operator/(Packet &packet);
     };
     
-    class IntegerPacket : public Packet
+    class PInt : public Packet
     {
         private:
             std::string get_i_data();
             void read_i_data(ClientSocket &socket);
             int value;
         public:
-            IntegerPacket(int value = 0);
+            PInt(int value = 0);
             int get_value();
     };
 
-    class StringPacket : public Packet
+    class PString : public Packet
     {
         private:
             std::string get_i_data();
             void read_i_data(ClientSocket &socket);
             std::string data;
         public:
-            StringPacket(std::string data = "");
+            PString(std::string data = "");
             std::string get_value();
     };
 }
