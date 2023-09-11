@@ -12,8 +12,6 @@ OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 TEST_SRC = $(wildcard test/*.cpp)
 TEST_OBJ = $(TEST_SRC:test/%.cpp=$(OBJ_DIR)/%.o)
 
-
-# Rules
 lib: directories $(OBJ)
 	$(CXX) $(OBJ) -shared -o lib$(BIN).so $(LDFLAGS)
 

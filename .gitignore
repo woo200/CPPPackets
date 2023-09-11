@@ -5,3 +5,5 @@ obj
 .vscode
 libpackets.so
 packets
+*.py
+*.pyc

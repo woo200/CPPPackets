@@ -14,7 +14,7 @@ int main(void)
     woo200::Packet finalPacket = packet / packet2;
 
     woo200::ClientSocket socket;
-    if (socket.connect(80, "127.0.0.1") < 0)
+    if (socket.connect(8080, "127.0.0.1") < 0)
         exit_error("E: Failed to connect to server");
     socket.send((void*)finalPacket.get_data().c_str(), finalPacket.get_size());
 
