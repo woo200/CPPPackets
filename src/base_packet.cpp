@@ -5,34 +5,49 @@ namespace woo200
     Packet::Packet()
     {
         this->size = 0;
+        this->index = 0;
+
+        this->packets = std::vector<Packet*>();
+        this->packets.push_back(this);
     }
     Packet Packet::operator/(Packet &packet)
     {
-        std::cout << this->get_data() << std::endl;
-        std::cout << packet.get_data() << std::endl;
         this->packets.push_back(&packet);
         return *this;
     }
+    Packet* Packet::next()
+    {
+        if (this->index >= this->packets.size())
+            return nullptr;
+        return this->packets[this->index++];
+    }
+
     // Virtual Function
     std::string Packet::get_i_data()
     {
         return "";
     }
+    // Virtual Function
+    void Packet::read_i_data(ClientSocket &socket)
+    {
+        return;
+    }
 
     std::string Packet::get_data()
     {
-        std::cout << "Packet::get_data()" << std::endl;
         std::string final_data;
-        final_data += this->get_i_data();
-        
+
         for (unsigned long i = 0; i < this->packets.size(); i++)
-        {
-            final_data += this->packets[i]->get_i_data();
-            std::cout << this->packets(\) << std::endl;
-        }
+            final_data.append(this->packets[i]->get_i_data());
 
         this->size = final_data.size();
         return final_data;
+    }
+
+    void Packet::read_from_socket(ClientSocket &socket)
+    {
+        for (unsigned long i = 0; i < this->packets.size(); i++)
+            this->packets[i]->read_i_data(socket);
     }
 
     int Packet::get_size()
@@ -42,12 +57,37 @@ namespace woo200
         return this->size;
     }
 
-    IntegerPacket::IntegerPacket(std::string data)
+    IntegerPacket::IntegerPacket(int value)
     {
-        this->data = data;
+        this->value = value;
+    }
+    void IntegerPacket::read_i_data(ClientSocket &socket)
+    {
+        socket.recv((char*)&this->value, sizeof(this->value));
     }
     std::string IntegerPacket::get_i_data() 
     {
-        return this->data;
+        return std::string((char*)&this->value, sizeof(this->value));
     }
+
+    StringPacket::StringPacket(std::string data)
+    {
+        this->data = data;
+    }
+    void StringPacket::read_i_data(ClientSocket &socket)
+    {
+        unsigned short size;
+        socket.recv((unsigned short*)&size, sizeof(size));
+
+        char* data = new char[size];
+        socket.recv(data, size);
+
+        this->data = std::string(data, size);
+    }
+    std::string StringPacket::get_i_data()
+    {
+        unsigned short size = this->data.size();
+        return std::string((char*)&size, sizeof(size)) + this->data;
+    }
+    
 }

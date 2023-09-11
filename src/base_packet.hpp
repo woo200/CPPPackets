@@ -10,15 +10,19 @@ namespace woo200
     {
         private:
             virtual std::string get_i_data();
+            virtual void read_i_data(ClientSocket &socket);
+
             std::vector<Packet*> packets;
             int size = 0;
+            int index = 0;
         public:
             Packet();
-            Packet(ClientSocket &socket);
 
+            void read_from_socket(ClientSocket &socket);
             std::string get_data();
             int get_size();
 
+            Packet* next();
             Packet operator/(Packet &packet);
     };
     
@@ -26,9 +30,19 @@ namespace woo200
     {
         private:
             std::string get_i_data();
+            void read_i_data(ClientSocket &socket);
+            int value;
+        public:
+            IntegerPacket(int value = 0);
+    };
+
+    class StringPacket : public Packet
+    {
+        private:
+            std::string get_i_data();
+            void read_i_data(ClientSocket &socket);
             std::string data;
         public:
-            IntegerPacket(std::string data);
-            IntegerPacket(ClientSocket &socket);
+            StringPacket(std::string data = "");
     };
 }
