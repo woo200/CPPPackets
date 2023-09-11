@@ -36,6 +36,7 @@ namespace woo200
         public:
             PInt(int value = 0);
             int get_value();
+            void set_value(int value);
     };
 
     class PString : public Packet
@@ -47,5 +48,6 @@ namespace woo200
         public:
             PString(std::string data = "");
             std::string get_value();
+            void set_value(std::string data);
     };
 }

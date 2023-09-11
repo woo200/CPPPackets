@@ -77,6 +77,10 @@ namespace woo200
     {
         return this->value;
     }
+    void PInt::set_value(int value)
+    {
+        this->value = value;
+    }
 
     PString::PString(std::string data)
     {
@@ -100,6 +104,10 @@ namespace woo200
     std::string PString::get_value()
     {
         return this->data;
+    }
+    void PString::set_value(std::string data)
+    {
+        this->data = data;
     }
     
 }
