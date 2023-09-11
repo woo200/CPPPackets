@@ -7,3 +7,4 @@ libpackets.so
 packets
 *.py
 *.pyc
+include
