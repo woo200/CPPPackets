@@ -1,7 +1,8 @@
 # Variables
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -O2
-LDFLAGS =
+# leave debug symbols 
+CXXFLAGS = -std=c++11 -Wall -Wextra -O2 
+LDFLAGS = 
 OBJ_DIR = obj
 BIN = tests
 SRC_DIR = src
