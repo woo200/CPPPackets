@@ -20,7 +20,7 @@ namespace woo200 {
         sockaddr_in get_addr();
 
         int connect(int port, const char* ip);
-        int connect(int port, sockaddr_in* addr);
+        int connect(sockaddr_in* addr);
         int send(void* msg, int len);
         int recv(void* buf, int len, int flags=0);
         void close();

@@ -43,7 +43,7 @@ namespace woo200
 
         return this->connect();
     }
-    int ClientSocket::connect(int port, sockaddr_in* addr)
+    int ClientSocket::connect(sockaddr_in* addr)
     {
         this->remote_addr = *addr;
         return this->connect();

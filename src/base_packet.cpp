@@ -43,6 +43,7 @@ namespace woo200
             if (ret < 0)
                 return ret;
         }
+        return 0;
     }
 
     std::string Packet::get_data()
@@ -63,7 +64,8 @@ namespace woo200
             int ret = this->packets[i]->read_i_data(socket);
             if (ret < 0)
                 return ret;
-        }   
+        } 
+        return 0;
     }
     int Packet::send_to_socket(ClientSocket &socket)
     {
