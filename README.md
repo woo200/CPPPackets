@@ -19,10 +19,12 @@ You can find examples of client/server communication with packets in the example
 
 ### 1. Setting up the Library
 
-`git clone https://github.com/woo200/CPPPackets.git`
-`cd CPPPackets`
-`make`
-`sudo make install`
+```
+git clone https://github.com/woo200/CPPPackets.git
+cd CPPPackets
+make
+sudo make install
+```
 
 ### 2. Create Custom Packet Classes
 
