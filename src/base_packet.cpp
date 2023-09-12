@@ -9,6 +9,8 @@ namespace woo200
 
         this->packets = std::vector<Packet*>();
         this->packets.push_back(this);
+
+        this->fields = std::vector<Packet*>();
     }
     Packet Packet::operator/(Packet &packet)
     {
@@ -22,15 +24,25 @@ namespace woo200
         return this->packets[this->index++];
     }
 
-    // Virtual Function
+    // If overriden, this function should return the data for this packet only
     std::string Packet::get_i_data()
     {
-        return "";
+        std::string final_data;
+
+        for (unsigned long i = 0; i < this->fields.size(); i++)
+            final_data.append(this->fields[i]->get_i_data());
+
+        return final_data;
     }
     // Virtual Function
-    void Packet::read_i_data(ClientSocket &socket)
+    int Packet::read_i_data(ClientSocket &socket)
     {
-        return;
+        for (unsigned long i = 0; i < this->fields.size(); i++)
+        {
+            int ret = this->fields[i]->read_i_data(socket);
+            if (ret < 0)
+                return ret;
+        }
     }
 
     std::string Packet::get_data()
@@ -44,10 +56,14 @@ namespace woo200
         return final_data;
     }
 
-    void Packet::read_from_socket(ClientSocket &socket)
+    int Packet::read_from_socket(ClientSocket &socket)
     {
         for (unsigned long i = 0; i < this->packets.size(); i++)
-            this->packets[i]->read_i_data(socket);
+        {
+            int ret = this->packets[i]->read_i_data(socket);
+            if (ret < 0)
+                return ret;
+        }   
     }
     int Packet::send_to_socket(ClientSocket &socket)
     {
@@ -60,14 +76,18 @@ namespace woo200
             this->get_data();
         return this->size;
     }
+    void Packet::add_field(Packet* packet)
+    {
+        this->fields.push_back(packet);
+    }
 
     PInt::PInt(int value)
     {
         this->value = value;
     }
-    void PInt::read_i_data(ClientSocket &socket)
+    int PInt::read_i_data(ClientSocket &socket)
     {
-        socket.recv((char*)&this->value, sizeof(this->value));
+        return socket.recv((char*)&this->value, sizeof(this->value));
     }
     std::string PInt::get_i_data() 
     {
@@ -86,15 +106,19 @@ namespace woo200
     {
         this->data = data;
     }
-    void PString::read_i_data(ClientSocket &socket)
+    int PString::read_i_data(ClientSocket &socket)
     {
         unsigned short size;
-        socket.recv((unsigned short*)&size, sizeof(size));
+        if (socket.recv((unsigned short*)&size, sizeof(size)) < 0)
+            return -1;
 
         char* data = new char[size];
-        socket.recv(data, size);
+        if (socket.recv(data, size) < 0)
+            return -1;
 
         this->data = std::string(data, size);
+        
+        return 0;
     }
     std::string PString::get_i_data()
     {
@@ -108,6 +132,27 @@ namespace woo200
     void PString::set_value(std::string data)
     {
         this->data = data;
+    }
+
+    PUlong::PUlong(unsigned long value)
+    {
+        this->value = value;
+    }
+    int PUlong::read_i_data(ClientSocket &socket)
+    {
+        return socket.recv((char*)&this->value, sizeof(this->value));
+    }
+    std::string PUlong::get_i_data()
+    {
+        return std::string((char*)&this->value, sizeof(this->value));
+    }
+    unsigned long PUlong::get_value()
+    {
+        return this->value;
+    }
+    void PUlong::set_value(unsigned long value)
+    {
+        this->value = value;
     }
     
 }

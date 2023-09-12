@@ -22,6 +22,13 @@ directories: $(OBJ_DIR) $(HEADER_DIR)
 headers:
 	cp src/*.hpp $(HEADER_DIR)
 
+install:
+	cp lib$(BIN).so /usr/local/lib
+	cp $(HEADER_DIR)/*.hpp /usr/local/include
+
+uninstall:
+	rm -rf /usr/local/lib/lib$(BIN).so
+
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 $(HEADER_DIR):
@@ -39,4 +46,4 @@ $(OBJ_DIR)/%.o: src/%.cpp
 
 .PHONY: clean
 clean:
-	rm -rf $(OBJ_DIR) $(BIN)
+	rm -rf $(OBJ_DIR) $(BIN) $(HEADER_DIR) lib$(BIN).so
