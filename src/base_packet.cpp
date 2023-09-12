@@ -81,27 +81,6 @@ namespace woo200
         this->fields.push_back(packet);
     }
 
-    PInt::PInt(int value)
-    {
-        this->value = value;
-    }
-    int PInt::read_i_data(ClientSocket &socket)
-    {
-        return socket.recv((char*)&this->value, sizeof(this->value));
-    }
-    std::string PInt::get_i_data() 
-    {
-        return std::string((char*)&this->value, sizeof(this->value));
-    }
-    int PInt::get_value()
-    {
-        return this->value;
-    }
-    void PInt::set_value(int value)
-    {
-        this->value = value;
-    }
-
     PString::PString(std::string data)
     {
         this->data = data;
@@ -133,26 +112,4 @@ namespace woo200
     {
         this->data = data;
     }
-
-    PUlong::PUlong(unsigned long value)
-    {
-        this->value = value;
-    }
-    int PUlong::read_i_data(ClientSocket &socket)
-    {
-        return socket.recv((char*)&this->value, sizeof(this->value));
-    }
-    std::string PUlong::get_i_data()
-    {
-        return std::string((char*)&this->value, sizeof(this->value));
-    }
-    unsigned long PUlong::get_value()
-    {
-        return this->value;
-    }
-    void PUlong::set_value(unsigned long value)
-    {
-        this->value = value;
-    }
-    
 }

@@ -9,7 +9,7 @@ namespace woo200
     {
         private:
             PString* filename;
-            PUlong* size;
+            PObj<unsigned long>* size;
         public:
             PFileHeader(std::string filename = "", unsigned long size = 0);
             ~PFileHeader();

@@ -30,16 +30,27 @@ namespace woo200
             Packet operator/(Packet &packet);
     };
     
-    class PInt : public Packet
+    template <class T>
+    class PObj : public Packet
     {
         private:
-            std::string get_i_data();
-            int read_i_data(ClientSocket &socket);
-            int value;
+            std::string get_i_data() {
+                return std::string((char*)&this->value, sizeof(T));
+            }
+            int read_i_data(ClientSocket &socket) {
+                socket.recv((char*)&this->value, sizeof(T));
+            }
+            T value;
         public:
-            PInt(int value = 0);
-            int get_value();
-            void set_value(int value);
+            PObj(T value = NULL) {
+                this->value = value;
+            }
+            T get_value() {
+                return this->value;
+            }
+            void set_value(T value) {
+                this->value = value;
+            }
     };
 
     class PString : public Packet
@@ -54,15 +65,4 @@ namespace woo200
             void set_value(std::string data);
     };
 
-    class PUlong : public Packet
-    {
-        private:
-            std::string get_i_data();
-            int read_i_data(ClientSocket &socket);
-            unsigned long value;
-        public:
-            PUlong(unsigned long value = 0);
-            unsigned long get_value();
-            void set_value(unsigned long value);
-    };
 }

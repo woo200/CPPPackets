@@ -5,7 +5,7 @@ namespace woo200
     PFileHeader::PFileHeader(std::string filename, unsigned long size)
     {
         this->filename = new PString(filename);
-        this->size = new PUlong(size);
+        this->size = new PObj<unsigned long>(size);
 
         this->add_field(this->filename);
         this->add_field(this->size);
