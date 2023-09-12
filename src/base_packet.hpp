@@ -5,7 +5,6 @@
 
 namespace woo200
 {
-    // BASE CLASS (Not Implimented)
     class Packet
     {
         private:
@@ -35,21 +34,25 @@ namespace woo200
     {
         private:
             std::string get_i_data() {
-                return std::string((char*)&this->value, sizeof(T));
+                return std::string((char*)this->value, sizeof(T));
             }
             int read_i_data(ClientSocket &socket) {
-                socket.recv((char*)&this->value, sizeof(T));
+                return socket.recv((char*)this->value, sizeof(T));
             }
-            T value;
+            T* value;
         public:
             PObj(T value = NULL) {
-                this->value = value;
+                this->value = (T*) malloc(sizeof(T));
+                *this->value = value;
+            }
+            ~PObj() {
+                free(this->value);
             }
             T get_value() {
-                return this->value;
+                return *this->value;
             }
             void set_value(T value) {
-                this->value = value;
+                *this->value = value;
             }
     };
 

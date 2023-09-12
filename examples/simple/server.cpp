@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "server.hpp"
 
 void exit_error(std::string error)
 {
