@@ -2,10 +2,10 @@
 
 namespace woo200
 {   
-    ClientSocket::ClientSocket()
+    ClientSocket::ClientSocket(int socket_family, int socket_type, int protocol)
     {
-        this->sock = socket(AF_INET, SOCK_STREAM, 0);
-        this->remote_addr.sin_family = AF_INET;
+        this->sock = socket(socket_family, socket_type, protocol);
+        this->remote_addr.sin_family = socket_family;
         this->connected = false;
     }
     ClientSocket::ClientSocket(int sock, sockaddr_in addr)
@@ -61,10 +61,10 @@ namespace woo200
         ::close(this->sock);
     }
 
-    ServerSocket::ServerSocket()
+    ServerSocket::ServerSocket(int socket_family, int socket_type, int protocol)
     {
-        this->sock = socket(AF_INET, SOCK_STREAM, 0);
-        this->bind_addr.sin_family = AF_INET;
+        this->sock = socket(socket_family, socket_type, protocol);
+        this->bind_addr.sin_family = socket_family;
     }
     ServerSocket::~ServerSocket()
     {

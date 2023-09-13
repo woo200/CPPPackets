@@ -13,7 +13,7 @@ namespace woo200 {
     private:
         int connect();
     public:
-        ClientSocket();
+        ClientSocket(int socket_family = AF_INET, int socket_type = SOCK_STREAM, int protocol = 0);
         ClientSocket(int sock, sockaddr_in addr);
         ~ClientSocket();
 
@@ -30,7 +30,7 @@ namespace woo200 {
         struct sockaddr_in bind_addr;
         int sock;
     public:
-        ServerSocket();
+        ServerSocket(int socket_family = AF_INET, int socket_type = SOCK_STREAM, int protocol = 0);
         ~ServerSocket();
 
         int bind(const char* address, int port);
