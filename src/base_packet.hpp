@@ -8,14 +8,13 @@ namespace woo200
     class Packet
     {
         private:
-            virtual std::string get_i_data();
-            virtual int read_i_data(ClientSocket &socket);
-
             std::vector<Packet*> packets;
             std::vector<Packet*> fields;
             int size = 0;
             unsigned long index = 0;
         protected:
+            virtual std::string get_i_data();
+            virtual int read_i_data(ClientSocket &socket);
             void add_field(Packet* packet);
         public:
             Packet();

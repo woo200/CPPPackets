@@ -29,11 +29,19 @@ namespace woo200
         
         private:
             std::string get_i_data() {
-
-                return std::string((char*)this->value, sizeof(T) * *this->size_field);
+                std::string header = Packet::get_i_data();
+                for (unsigned int i = 0; i < *this->size_field; i++)
+                    header += std::string((char*)&this->value[i], sizeof(T));
+                return header;
             }
             int read_i_data(ClientSocket &socket) {
-                return socket.recv((char*)this->value, sizeof(T) * *this->size_field);
+                Packet::read_i_data(socket);
+                this->resize(*this->size_field);
+
+                for (unsigned int i = 0; i < *this->size_field; i++)
+                    if (socket.recv((char*)&this->value[i], sizeof(T)) < 0)
+                        return -1;
+                return 0;
             }
             void resize(int size) {
                 *this->size_field = size;
