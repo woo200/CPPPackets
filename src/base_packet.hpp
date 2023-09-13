@@ -54,6 +54,22 @@ namespace woo200
             void set_value(T value) {
                 *this->value = value;
             }
+            operator T() {
+                return *this->value;
+            }
+            T& operator=(T value) {
+                *this->value = value;
+                return *this->value;
+            }
+            T& operator++() {
+                *this->value = *this->value + 1;
+                return *this->value;
+            }
+            T& operator--() {
+                *this->value = *this->value - 1;
+                return *this->value;
+            }
+
     };
 
     class PString : public Packet

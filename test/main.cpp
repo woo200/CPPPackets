@@ -8,20 +8,34 @@ void exit_error(std::string error)
 
 int main(void)
 {
-    woo200::PSimpleVector<int> example_vector(5);
+    // Packet definition
 
-    example_vector[0] = 1;
-    example_vector[1] = 2;
-    example_vector[2] = 3;
-    example_vector[3] = 4;
-    example_vector[4] = 5;
+    woo200::PSimpleVector<float> example_string;
 
-    example_vector.push_back(17);
+    example_string.push_back(1.0f);
+    example_string.push_back(2.0f);
+    example_string.push_back(3.1415f);
+    example_string.push_back(4.0f);
 
-    for (int i = 0; i < example_vector.vector_size(); i++)
-        std::cout << example_vector[i] << std::endl;
+    woo200::ServerSocket socket;
+    if (socket.bind("0.0.0.0", 8080) < 0)
+        exit_error("E: Failed to bind to port");
+    if (socket.listen(5) < 0)
+        exit_error("E: Failed to listen on port");
+    
+    std::cout << "Listening on 0.0.0.0:8080" << std::endl;
+    woo200::ClientSocket* client_socket = socket.accept();  
 
-    std::cout << "\"" << example_vector.get_size() << "\"" << std::endl;
+    example_string.read_from_socket(*client_socket);   // Send to server
 
+    example_string.clear();
+    example_string.push_back(5.0f);
+    example_string.push_back(6.0f);
+    example_string.push_back(7.0f);
+    example_string.push_back(8.0f);
+
+    example_string.send_to_socket(*client_socket);   // Send to servers
+
+    socket.close();
     return 0;
 }
