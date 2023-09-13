@@ -69,3 +69,5 @@ namespace woo200
     };
 
 }
+
+#include "PSimpleVector.hpp"
