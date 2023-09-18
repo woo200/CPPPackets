@@ -8,3 +8,5 @@ packets
 *.py
 *.pyc
 include
+server
+client
